@@ -35,6 +35,9 @@ def get_processed_data() -> pd.DataFrame:
     else:
         df["event_at"] = df["event_at"].dt.tz_localize("UTC").dt.tz_convert("Asia/Yerevan")
 
+    # Flag rows where address is just the city name with no street (e.g. "Yerevan 14/2")
+    df["bare_city_address"] = df["address_en"].str.strip().str.lower() == "yerevan"
+
     # Append building to address if available
     has_building = df["building"].notna() & (df["building"].astype(str).str.strip() != "")
     building_str = " " + df["building"].astype(str).str.strip()

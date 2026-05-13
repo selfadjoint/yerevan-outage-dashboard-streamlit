@@ -293,7 +293,11 @@ if total_events > 0:
     latest_outage = filtered_df["event_at"].max().strftime('%Y-%m-%d %H:%M:%S')
     top_district = filtered_df[dist_col].mode()
     top_district_name = top_district.iloc[0] if not top_district.empty else "N/A"
-    worst_candidates = filtered_df[filtered_df["building"].notna() & (filtered_df["building"].astype(str).str.strip() != "")]
+    worst_candidates = filtered_df[
+        filtered_df["building"].notna() &
+        (filtered_df["building"].astype(str).str.strip() != "") &
+        ~filtered_df["bare_city_address"]
+    ]
     if not worst_candidates.empty:
         worst = worst_candidates.groupby(addr_col).agg(
             total=("kind", "count"),
