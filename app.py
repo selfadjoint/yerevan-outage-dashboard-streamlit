@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
-from datetime import timedelta
+from datetime import timedelta, date
 from data import get_processed_data, build_map_groups, MIN_DATE
 
 
@@ -210,14 +210,32 @@ dist_col = lang_col("district")
 # ----------------- #
 st.sidebar.header(t("filters"))
 
-# Date Filter
+# Date Filter — supports URL params ?date_from=YYYY-MM-DD&date_to=YYYY-MM-DD
 min_date = pd.Timestamp(MIN_DATE).date()
 today = pd.Timestamp.now("Asia/Yerevan").date()
 max_date = max(df["event_at"].max().date(), today)
 default_start = max(today - timedelta(days=30), min_date)
+
+if "date_filter_initialized" not in st.session_state:
+    qp = st.query_params
+    def _parse_date(s, fallback):
+        try:
+            return max(min(date.fromisoformat(s), max_date), min_date)
+        except (ValueError, TypeError):
+            return fallback
+    url_start = _parse_date(qp.get("date_from"), default_start)
+    url_end = _parse_date(qp.get("date_to"), max_date)
+    st.session_state["date_filter"] = (url_start, url_end)
+    st.session_state["date_filter_initialized"] = True
+
 selected_dates = st.sidebar.date_input(
-    t("date_range"), value=(default_start, max_date), min_value=min_date, max_value=max_date
+    t("date_range"), key="date_filter", min_value=min_date, max_value=max_date
 )
+
+# Keep URL in sync with current widget selection
+if len(selected_dates) == 2:
+    st.query_params["date_from"] = selected_dates[0].isoformat()
+    st.query_params["date_to"] = selected_dates[1].isoformat()
 
 # Utility Filter — display translated labels, map back to English for filtering
 available_kinds_en = sorted(df["kind"].dropna().unique().tolist())
