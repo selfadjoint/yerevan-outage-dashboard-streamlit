@@ -1,14 +1,18 @@
 import streamlit as st
 
-st.set_page_config(page_title="Redirecting...", page_icon="🔌")
+st.set_page_config(page_title="Redirecting", page_icon="plug", layout="centered")
 
-# Redirect using both meta refresh and JavaScript for maximum compatibility
-redirect_html = """
-<meta http-equiv="refresh" content="0;url=https://yerevanoutage.com/" />
+st.markdown(
+    '<meta http-equiv="refresh" content="0;url=https://yerevanoutage.com/" />',
+    unsafe_allow_html=True,
+)
+
+st.markdown("""
 <script>
-window.location.href = "https://yerevanoutage.com/";
+if (window.location.hostname !== 'yerevanoutage.com') {
+    window.location.href = 'https://yerevanoutage.com/';
+}
 </script>
-"""
+""", unsafe_allow_html=True)
 
-st.markdown(redirect_html, unsafe_allow_html=True)
-st.write("Redirecting to yerevanoutage.com...")
+st.info("Redirecting to yerevanoutage.com...")
