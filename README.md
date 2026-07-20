@@ -1,6 +1,12 @@
-# Yerevan Utility Outages Dashboard
+# Yerevan Utility Outages Dashboard (Archived)
 
-Bilingual (English / Armenian) Streamlit dashboard that visualizes electricity and water utility outages across Yerevan's 12 districts.
+> **This project has moved!** See the new version at **[yerevanoutage.com](https://yerevanoutage.com/)** and the source code at **[github.com/selfadjoint/yerevan-outage-dashboard](https://github.com/selfadjoint/yerevan-outage-dashboard)**.
+
+This repository contains the archived Streamlit version. The active project has been migrated to a new codebase with improvements and continued development.
+
+---
+
+Original: Bilingual (English / Armenian) Streamlit dashboard that visualizes electricity and water utility outages across Yerevan's 12 districts.
 
 ![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)
 ![Streamlit](https://img.shields.io/badge/streamlit-1.54%2B-FF4B4B)
